@@ -15,7 +15,7 @@ export const handleFetchError = async (res) => {
       // Call logout api here
       localStorage.clear();
     }
-    toasterService.error(response.Message);
+    toasterService.error("something went wrong");
     throw errRes;
   }
   return res.json();
