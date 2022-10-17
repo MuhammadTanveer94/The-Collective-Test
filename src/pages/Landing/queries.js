@@ -1,14 +1,15 @@
-import {useQuery} from "react-query";
-
-import {GistsService} from "../../apiServices";
-import {API_STORAGE_KEY} from "../../constants/constant";
+import { useQuery } from "react-query";
+import { GistsService } from "../../apiServices";
+import { API_STORAGE_KEY } from "../../constants/constant";
 
 const gistsListKey = API_STORAGE_KEY.PUBLIC_GISTS_LIST;
 const forkListKey = API_STORAGE_KEY.FORK_GISTS_LIST;
+const forkUser = API_STORAGE_KEY.FORK_USER;
 
 const listKeys = {
   gistsList: (payload, searchText) => [gistsListKey, payload, searchText],
-  forkList: (id) => [gistsListKey, id],
+  forkList: (id) => [forkListKey, id],
+  forkUser: (id) => [forkUser, id],
 };
 function useGistsList(payload, searchText) {
   return useQuery(
@@ -31,7 +32,18 @@ function useForkList(id) {
       const res = await GistsService.getForkList({}, null, id);
       return res;
     },
-    {keepPreviousData: true, staleTime: Infinity}
+    { keepPreviousData: true, staleTime: Infinity }
   );
 }
-export {useGistsList, useForkList};
+
+function useGetUser(id) {
+  return useQuery(
+    listKeys.forkUser(id),
+    async () => {
+      const res = await GistsService.getForkUser({}, null, id);
+      return res;
+    },
+    { keepPreviousData: true, staleTime: Infinity }
+  );
+}
+export { useGistsList, useGetUser, useForkList };

@@ -1,13 +1,11 @@
-import React from "react";
-import {ReactQueryDevtools} from "react-query/devtools";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-
-import {FullPageLoader} from "./components";
-import {getNextPageParam} from "./services/react-query.service";
-
-import "./App.less";
 import "antd/dist/antd.css";
+import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter } from "react-router-dom";
+import "./App.less";
+import { FullPageLoader } from "./components";
+import AppRoutes from "./routes/AppRoutes";
+import { getNextPageParam } from "./services/react-query.service";
 
 const Landing = React.lazy(() => import("./pages/Landing"));
 
@@ -27,13 +25,7 @@ function App() {
   return (
     <React.Suspense fallback={<FullPageLoader />}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Landing />}>
-              <Route path='*' element={<Landing />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <BrowserRouter>{AppRoutes()}</BrowserRouter>
       </QueryClientProvider>
     </React.Suspense>
   );
